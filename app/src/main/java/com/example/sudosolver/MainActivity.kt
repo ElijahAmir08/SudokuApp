@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import coil.compose.AsyncImage
 import com.example.sudosolver.ui.theme.SudoSolverTheme
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MainActivity : ComponentActivity() {
 
@@ -105,6 +107,7 @@ class MainActivity : ComponentActivity() {
                             lifecycleScope.launch {
                                 val puzzleString = OCRUtils.extractDigitsFromBitmap(bitmap)
                                 Toast.makeText(context, "Extracted: $puzzleString", Toast.LENGTH_LONG).show()
+                                OCRUtils.saveTextToFile(context, puzzleString)
                             }
                         }
                     }) {
