@@ -47,6 +47,22 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    fun solveSudokuUsingJava(puzzleString: String): List<List<Int>> {
+        val board = SudoBoard()
+        board.fromString(puzzleString)          // load the puzzle
+        board.solveCandidates()                 // calculate candidates
+        board.brute(0, 0)                       // solve starting from top-left
+
+        // Build 9x9 result
+        val solved = List(9) { row ->
+            List(9) { col ->
+                board.getCellValue(row, col)
+            }
+        }
+
+        return solved
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -111,6 +127,9 @@ class MainActivity : ComponentActivity() {
                                 val cellBitmaps = ImageSlicer.sliceSudokuBitMap(bitmap)
                                 val puzzleSolvedString = OCRUtils.extractDigitsCells(context, cellBitmaps)
                                 Log.d("Final result", "Result: $puzzleSolvedString")
+
+                                val solvedGrid = solveSudokuUsingJava(puzzleString)
+                                solvedGrid.forEach { row -> println(row.joinToString(" ")) }
                             }
                         }
                     }) {
