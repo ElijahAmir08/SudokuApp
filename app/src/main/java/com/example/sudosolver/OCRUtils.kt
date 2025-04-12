@@ -9,6 +9,7 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import kotlinx.coroutines.tasks.await
 import java.io.File
+import androidx.core.graphics.scale
 
 object OCRUtils {
 
@@ -37,14 +38,15 @@ object OCRUtils {
         val result = StringBuilder()
         for ((index, cell) in cells.withIndex()) { //Loop through the cells and their indexes [0 to 80]
             val preprocessed = ImagePreprocessing.preprocessCellBitmap(cell)
-            val image = InputImage.fromBitmap(preprocessed, 0)
+            val scaled = preprocessed.scale(50, 50)
+            val image = InputImage.fromBitmap(scaled, 0)
 
             try {
                 val text = recognizer.process(image).await().text
                 //If it is any character except for 1 to 9 then return '.' & Ensures it reads one char at a time
                 val digit = text.trim().firstOrNull {it in '1'..'9'}?: '.'
                 result.append(digit)
-                Log.d("OCR Cell Reading", "Cell $index: OCR = '$text' -> '$digit' ") //Log the reading of each cell
+                Log.d("OCR Raw", "Cell $index raw text: '$text'")
             } catch (e : Exception) {
                 result.append('.')
                 Log.e("OCR error", "Cell $index: ${e.message}")
@@ -52,6 +54,16 @@ object OCRUtils {
         }
         return result.toString()
     }
+
+    /*fun normalizeDigit(text: String): Char {
+        return when (text.trim()) {
+            "L", "l" -> '5'
+            "S", "s" -> '5'
+            "O", "o" -> '0'
+            "Z", "z" -> '2'
+            else -> text.firstOrNull { it in '1'..'9' } ?: '.'
+        }
+    }*/
 
     fun saveTextToFile(context: Context, content: String, label: String = "puzzle"): File? {
         return try {
