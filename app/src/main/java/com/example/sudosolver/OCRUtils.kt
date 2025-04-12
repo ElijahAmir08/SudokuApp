@@ -3,6 +3,7 @@ package com.example.sudosolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
+import com.example.sudosolver.ui.theme.ImagePreprocessing
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -35,7 +36,9 @@ object OCRUtils {
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         val result = StringBuilder()
         for ((index, cell) in cells.withIndex()) { //Loop through the cells and their indexes [0 to 80]
-            val image = InputImage.fromBitmap(cell, 0)
+            val preprocessed = ImagePreprocessing.preprocessCellBitmap(cell)
+            val image = InputImage.fromBitmap(preprocessed, 0)
+
             try {
                 val text = recognizer.process(image).await().text
                 //If it is any character except for 1 to 9 then return '.' & Ensures it reads one char at a time
