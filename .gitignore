@@ -1,0 +1,23 @@
+# Java class files
+*.class
+
+# Logs
+*.log
+
+# Build directories
+bin/
+build/
+out/
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Misc
+.DS_Store
