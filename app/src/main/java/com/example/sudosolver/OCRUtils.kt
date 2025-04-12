@@ -38,7 +38,7 @@ object OCRUtils {
         val result = StringBuilder()
         for ((index, cell) in cells.withIndex()) { //Loop through the cells and their indexes [0 to 80]
             val preprocessed = ImagePreprocessing.preprocessCellBitmap(cell)
-            val scaled = preprocessed.scale(50, 50)
+            val scaled = preprocessed.scale(100, 100)
             val image = InputImage.fromBitmap(scaled, 0)
 
             try {
