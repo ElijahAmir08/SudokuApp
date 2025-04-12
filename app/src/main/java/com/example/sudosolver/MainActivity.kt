@@ -109,7 +109,7 @@ class MainActivity : ComponentActivity() {
                                 Toast.makeText(context, "Extracted: $puzzleString", Toast.LENGTH_LONG).show()
                                 OCRUtils.saveTextToFile(context, puzzleString)
                                 val cellBitmaps = ImageSlicer.sliceSudokuBitMap(bitmap)
-                                val puzzleSolvedString = OCRUtils.extractDigitsCells(cellBitmaps)
+                                val puzzleSolvedString = OCRUtils.extractDigitsCells(context, cellBitmaps)
                                 Log.d("Final result", "Result: $puzzleSolvedString")
                             }
                         }
