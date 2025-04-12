@@ -17,7 +17,8 @@ object ImageSlicer {
                     val x = col * cellSize
                     val y = row * cellSize
                     //Crop each of these cells
-                    val cellBitmap = Bitmap.createBitmap(bitmap, x, y, cellSize, cellSize)
+                    val margin = cellSize / 10 //Padding for reading
+                    val cellBitmap = Bitmap.createBitmap(bitmap, x + margin, y + margin, cellSize - 2*margin, cellSize - 2*margin)
                     cellBitmaps.add(cellBitmap)
                 }
             }
