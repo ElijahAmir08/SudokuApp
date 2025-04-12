@@ -68,6 +68,6 @@ dependencies {
     // Coroutines core
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-// Enables await() on Task<> objects like ML Kit
+    // Enables await() on Task<> objects like ML Kit
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 }
