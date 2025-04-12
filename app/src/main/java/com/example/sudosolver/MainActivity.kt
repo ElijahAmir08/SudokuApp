@@ -28,6 +28,17 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(this, "Image selected!", Toast.LENGTH_SHORT).show()
         }
     }
+    private val cameraLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val uri = result.data?.getStringExtra("captured_image_uri")
+        if (uri != null) {
+            Toast.makeText(this, "Camera image received!", Toast.LENGTH_SHORT).show()
+            // TODO: Use the URI for OCR/preview
+        }
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,4 +79,5 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
