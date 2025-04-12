@@ -1,11 +1,13 @@
 package com.example.sudosolver
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import kotlinx.coroutines.tasks.await
+import java.io.File
 
 object OCRUtils {
 
@@ -24,6 +26,17 @@ object OCRUtils {
         } catch (e: Exception) {
             Log.e("OCR", "OCR failed: ${e.message}")
             ""
+        }
+    }
+
+    fun saveTextToFile(context: Context, content: String, label: String = "puzzle"): File? {
+        return try {
+            val file = File(context.filesDir, "$label.txt")
+            file.writeText(content)
+            file
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }
