@@ -3,7 +3,6 @@ package com.example.sudosolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
-import com.example.sudosolver.ui.theme.ImagePreprocessing
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -31,27 +30,21 @@ object OCRUtils {
         }
     }
 
-    suspend fun extractDigitsCells(cells: List<Bitmap>): String { //Creates empty list
-        //I need to loop through each cell and feed it to the ML kit
-        //If it detects a number 1 - 9 use it, but if unsure return '.'
-        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-        val result = StringBuilder()
-        for ((index, cell) in cells.withIndex()) { //Loop through the cells and their indexes [0 to 80]
-            val preprocessed = ImagePreprocessing.preprocessCellBitmap(cell)
-            val scaled = preprocessed.scale(100, 100)
-            val image = InputImage.fromBitmap(scaled, 0)
+    suspend fun extractDigitsCells(context: Context, cells: List<Bitmap>): String {
+        TesseractOCR.init(context)  // new init line
 
+        val result = StringBuilder()
+        for ((index, cell) in cells.withIndex()) {
             try {
-                val text = recognizer.process(image).await().text
-                //If it is any character except for 1 to 9 then return '.' & Ensures it reads one char at a time
-                val digit = text.trim().firstOrNull {it in '1'..'9'}?: '.'
+                val digit = TesseractOCR.recognizeDigit(cell)
                 result.append(digit)
-                Log.d("OCR Raw", "Cell $index raw text: '$text'")
-            } catch (e : Exception) {
+                Log.d("OCR_CELL", "Cell $index → '$digit'")
+            } catch (e: Exception) {
                 result.append('.')
-                Log.e("OCR error", "Cell $index: ${e.message}")
+                Log.e("OCR_CELL", "Error at cell $index: ${e.message}")
             }
         }
+
         return result.toString()
     }
 
