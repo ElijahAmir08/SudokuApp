@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import coil.compose.AsyncImage
+import com.example.sudosolver.ui.theme.ImageSlicer
 import com.example.sudosolver.ui.theme.SudoSolverTheme
 import kotlinx.coroutines.launch
 import java.io.File
@@ -105,9 +106,13 @@ class MainActivity : ComponentActivity() {
                             val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
                             Toast.makeText(context, "Bitmap extracted: ${bitmap.width}x${bitmap.height}", Toast.LENGTH_SHORT).show()
                             lifecycleScope.launch {
+
                                 val puzzleString = OCRUtils.extractDigitsFromBitmap(bitmap)
                                 Toast.makeText(context, "Extracted: $puzzleString", Toast.LENGTH_LONG).show()
                                 OCRUtils.saveTextToFile(context, puzzleString)
+                                val cellBitmaps = ImageSlicer.sliceSudokuBitMap(bitmap)
+                                val puzzleSolvedString = OCRUtils.extractDigitsCells(cellBitmaps)
+                                Log.d("Final result", "Result: $puzzleSolvedString")
                             }
                         }
                     }) {
