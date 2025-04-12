@@ -1,6 +1,7 @@
 package com.example.sudosolver
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -17,12 +18,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import com.example.sudosolver.ui.theme.SudoSolverTheme
+import androidx.core.net.toUri
 
 
 class MainActivity : ComponentActivity() {
+    private val imageUri = mutableStateOf<Uri?>(null)
     private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         // Handle selected image here (we will display a placeholder for now)
         if (uri != null) {
@@ -36,7 +41,7 @@ class MainActivity : ComponentActivity() {
         val uri = result.data?.getStringExtra("captured_image_uri")
         if (uri != null) {
             Toast.makeText(this, "Camera image received!", Toast.LENGTH_SHORT).show()
-            // TODO: Use the URI for OCR/preview
+            imageUri.value = uri.toUri()
         }
     }
 
@@ -45,6 +50,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val currentImageUri = imageUri.value
             SudoSolverTheme {
                 val context = LocalContext.current
                 Column(
