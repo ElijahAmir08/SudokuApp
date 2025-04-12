@@ -1,5 +1,6 @@
 package com.example.sudosolver
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -17,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import com.example.sudosolver.ui.theme.SudoSolverTheme
 
 
@@ -44,6 +46,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SudoSolverTheme {
+                val context = LocalContext.current
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -53,6 +56,11 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Button(onClick = { imagePicker.launch("image/*") }) {
                         Text(text = "Select Sudoku Image")
+                    }
+                    Button(onClick = {
+                        cameraLauncher.launch(Intent(context, CameraCaptureActivity::class.java))
+                    }) {
+                        Text(text = "Capture Sudoku Image")
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
