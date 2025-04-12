@@ -3,7 +3,6 @@ package com.example.sudosolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
-import com.example.sudosolver.ui.theme.ImagePreprocessing
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions

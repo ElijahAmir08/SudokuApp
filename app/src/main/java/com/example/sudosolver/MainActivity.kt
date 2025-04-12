@@ -23,10 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import coil.compose.AsyncImage
-import com.example.sudosolver.ui.theme.ImageSlicer
 import com.example.sudosolver.ui.theme.SudoSolverTheme
 import kotlinx.coroutines.launch
-import java.io.File
 
 class MainActivity : ComponentActivity() {
 

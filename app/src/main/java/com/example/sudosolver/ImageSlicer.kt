@@ -1,4 +1,4 @@
-package com.example.sudosolver.ui.theme
+package com.example.sudosolver
 import android.graphics.Bitmap
 
 object ImageSlicer {
