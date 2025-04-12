@@ -29,6 +29,27 @@ object OCRUtils {
         }
     }
 
+    suspend fun extractDigitsCells(cells: List<Bitmap>): String { //Creates empty list
+        //I need to loop through each cell and feed it to the ML kit
+        //If it detects a number 1 - 9 use it, but if unsure return '.'
+        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+        val result = StringBuilder()
+        for ((index, cell) in cells.withIndex()) { //Loop through the cells and their indexes [0 to 80]
+            val image = InputImage.fromBitmap(cell, 0)
+            try {
+                val text = recognizer.process(image).await().text
+                //If it is any character except for 1 to 9 then return '.' & Ensures it reads one char at a time
+                val digit = text.trim().firstOrNull {it in '1'..'9'}?: '.'
+                result.append(digit)
+                Log.d("OCR Cell Reading", "Cell $index: OCR = '$text' -> '$digit' ") //Log the reading of each cell
+            } catch (e : Exception) {
+                result.append('.')
+                Log.e("OCR error", "Cell $index: ${e.message}")
+            }
+        }
+        return result.toString()
+    }
+
     fun saveTextToFile(context: Context, content: String, label: String = "puzzle"): File? {
         return try {
             val file = File(context.filesDir, "$label.txt")
