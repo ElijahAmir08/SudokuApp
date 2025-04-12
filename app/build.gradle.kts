@@ -64,4 +64,10 @@ dependencies {
     implementation("androidx.camera:camera-extensions:1.4.2")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("com.google.mlkit:text-recognition:16.0.1")
+
+    // Coroutines core
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+// Enables await() on Task<> objects like ML Kit
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 }
